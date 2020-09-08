@@ -1,5 +1,8 @@
 // hello.cc
 #include <node.h>
+extern "C" {
+#include "helpers.h"
+}
 
 namespace demo {
 
@@ -11,9 +14,11 @@ using v8::String;
 using v8::Value;
 
 void Method(const FunctionCallbackInfo<Value>& args) {
+  char storage[120];
+  say_hello(storage);
   Isolate* isolate = args.GetIsolate();
   args.GetReturnValue().Set(String::NewFromUtf8(
-      isolate, "world").ToLocalChecked());
+      isolate, storage).ToLocalChecked());
 }
 
 void Initialize(Local<Object> exports) {
